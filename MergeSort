@@ -1,0 +1,91 @@
+
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class MergeSort {
+
+    public static void mergeSort(int[] vetor, int inicio, int fim) {
+
+        if (inicio < fim) {
+
+            int meio = (inicio + fim) / 2;
+
+            // Ordena a primeira metade
+            mergeSort(vetor, inicio, meio);
+
+            // Ordena a segunda metade
+            mergeSort(vetor, meio + 1, fim);
+
+            // Intercala as duas metades ordenadas
+            intercalar(vetor, inicio, meio, fim);
+        }
+    }
+
+    public static void intercalar(int[] vetor, int inicio, int meio, int fim) {
+
+        int tamanho = fim - inicio + 1;
+        int[] auxiliar = new int[tamanho];
+
+        int i = inicio;
+        int j = meio + 1;
+        int k = 0;
+
+        // Compara os elementos das duas metades
+        while (i <= meio && j <= fim) {
+
+            if (vetor[i] <= vetor[j]) {
+                auxiliar[k] = vetor[i];
+                i++;
+            } else {
+                auxiliar[k] = vetor[j];
+                j++;
+            }
+
+            k++;
+        }
+
+        // Copia os elementos restantes da primeira metade
+        while (i <= meio) {
+            auxiliar[k] = vetor[i];
+            i++;
+            k++;
+        }
+
+        // Copia os elementos restantes da segunda metade
+        while (j <= fim) {
+            auxiliar[k] = vetor[j];
+            j++;
+            k++;
+        }
+
+        // Copia o vetor auxiliar para o vetor original
+        for (k = 0; k < tamanho; k++) {
+            vetor[inicio + k] = auxiliar[k];
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner entrada = new Scanner(System.in);
+
+        System.out.print("Quantos numeros deseja ordenar? ");
+        int n = entrada.nextInt();
+
+        int[] vetor = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Digite o numero " + (i + 1) + ": ");
+            vetor[i] = entrada.nextInt();
+        }
+
+        System.out.println("\nVetor original: "
+                + Arrays.toString(vetor));
+
+        mergeSort(vetor, 0, vetor.length - 1);
+
+        System.out.println("Vetor ordenado: "
+                + Arrays.toString(vetor));
+
+        entrada.close();
+    }
+}
